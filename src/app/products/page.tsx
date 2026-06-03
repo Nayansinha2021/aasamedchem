@@ -329,7 +329,7 @@ export default function ProductBrowser() {
                         <div className="text-right">
                           <span className="text-[10px] text-slate-400 font-medium uppercase tracking-wider block">Stock Available</span>
                           <span className={`text-sm font-semibold block mt-0.5 ${isOutOfStock ? 'text-rose-600' : 'text-slate-650'}`}>
-                            {Number(product.inventoryQuantity).toFixed(2)} {product.baseUnit}
+                            {Number(product.inventoryQuantity).toFixed(5)} {product.baseUnit}
                           </span>
                         </div>
                       </div>

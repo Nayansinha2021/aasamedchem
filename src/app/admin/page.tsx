@@ -159,7 +159,7 @@ export default function AdminDashboard() {
                               <span className="text-xs text-slate-500">{quote.user.email}</span>
                             </td>
                             <td className="py-4 text-xs text-slate-500">{new Date(quote.createdAt).toLocaleDateString()}</td>
-                            <td className="py-4 text-right font-semibold text-slate-800">₹{Number(quote.total).toFixed(2)}</td>
+                            <td className="py-4 text-right font-semibold text-slate-800">₹{Number(quote.total).toFixed(5)}</td>
                             <td className="py-4 text-right">{getStatusBadge(quote.status)}</td>
                           </tr>
                         ))}
@@ -196,7 +196,7 @@ export default function AdminDashboard() {
                               <span className="text-xs text-slate-500">{order.user.email}</span>
                             </td>
                             <td className="py-4 text-xs text-slate-500">{new Date(order.createdAt).toLocaleDateString()}</td>
-                            <td className="py-4 text-right font-semibold text-slate-800">₹{Number(order.total).toFixed(2)}</td>
+                            <td className="py-4 text-right font-semibold text-slate-800">₹{Number(order.total).toFixed(5)}</td>
                             <td className="py-4 text-right">{getStatusBadge(order.status)}</td>
                           </tr>
                         ))}

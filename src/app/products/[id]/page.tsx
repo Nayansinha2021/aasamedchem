@@ -160,7 +160,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ id: s
               <div>
                 <span className="text-xs text-slate-400 block">Available Stock</span>
                 <span className="text-sm font-bold text-slate-700 mt-1 block">
-                  {Number(product.inventoryQuantity).toFixed(2)} {product.baseUnit}
+                  {Number(product.inventoryQuantity).toFixed(5)} {product.baseUnit}
                 </span>
               </div>
             </div>

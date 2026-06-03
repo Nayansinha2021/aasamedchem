@@ -137,7 +137,7 @@ export default function SellerDashboard() {
                           <tr key={quote.id} className="hover:bg-[#faf7f2]/50">
                             <td className="py-4 font-mono text-xs truncate max-w-[120px]">{quote.id}</td>
                             <td className="py-4 text-xs text-slate-500">{new Date(quote.createdAt).toLocaleDateString()}</td>
-                            <td className="py-4 text-right font-semibold text-slate-800">₹{Number(quote.total).toFixed(2)}</td>
+                            <td className="py-4 text-right font-semibold text-slate-800">₹{Number(quote.total).toFixed(5)}</td>
                             <td className="py-4 text-right">{getStatusBadge(quote.status)}</td>
                           </tr>
                         ))}
@@ -171,7 +171,7 @@ export default function SellerDashboard() {
                           <tr key={order.id} className="hover:bg-[#faf7f2]/50">
                             <td className="py-4 font-mono text-xs truncate max-w-[120px]">{order.id}</td>
                             <td className="py-4 text-xs text-slate-500">{new Date(order.createdAt).toLocaleDateString()}</td>
-                            <td className="py-4 text-right font-semibold text-slate-800">₹{Number(order.total).toFixed(2)}</td>
+                            <td className="py-4 text-right font-semibold text-slate-800">₹{Number(order.total).toFixed(5)}</td>
                             <td className="py-4 text-right">{getStatusBadge(order.status)}</td>
                           </tr>
                         ))}
