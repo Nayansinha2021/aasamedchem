@@ -1,0 +1,119 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  ADMIN
+  SELLER
+}
+
+enum DimensionType {
+  WEIGHT
+  VOLUME
+  COUNT
+}
+
+enum QuotationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+model User {
+  id        String      @id @default(uuid())
+  name      String
+  email     String      @unique
+  password  String
+  role      Role        @default(SELLER)
+  createdAt DateTime    @default(now())
+  quotations Quotation[]
+  orders     Order[]
+  auditLogs  AuditLog[]
+}
+
+model Product {
+  id                String          @id @default(uuid())
+  sku               String          @unique
+  name              String
+  description       String?
+  category          String
+  dimensionType     DimensionType
+  baseUnit          String          // "g", "mL", "unit"
+  basePrice         Decimal         @db.Decimal(30, 5) // stored per internal base unit
+  inventoryQuantity Decimal         @db.Decimal(30, 5) // stored in base unit
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  quotationItems    QuotationItem[]
+  orderItems        OrderItem[]
+}
+
+model Quotation {
+  id        String          @id @default(uuid())
+  userId    String
+  user      User            @relation(fields: [userId], references: [id])
+  status    QuotationStatus @default(PENDING)
+  total     Decimal         @db.Decimal(30, 5)
+  createdAt DateTime        @default(now())
+  items     QuotationItem[]
+  order     Order?
+}
+
+model QuotationItem {
+  id              String    @id @default(uuid())
+  quotationId     String
+  quotation       Quotation @relation(fields: [quotationId], references: [id], onDelete: Cascade)
+  productId       String
+  product         Product   @relation(fields: [productId], references: [id])
+  orderedUnit     String    // e.g., "kg", "g", "L", "mL", "unit"
+  orderedQuantity Decimal   @db.Decimal(30, 5) // quantity input by user
+  baseQuantity    Decimal   @db.Decimal(30, 5) // converted quantity in base unit
+  unitPrice       Decimal   @db.Decimal(30, 5) // unit price of the selected unit (calculated)
+  subtotal        Decimal   @db.Decimal(30, 5) // baseQuantity * basePrice
+}
+
+model Order {
+  id          String      @id @default(uuid())
+  userId      String
+  user        User        @relation(fields: [userId], references: [id])
+  quotationId String?     @unique
+  quotation   Quotation?  @relation(fields: [quotationId], references: [id])
+  status      OrderStatus @default(PENDING)
+  total       Decimal     @db.Decimal(30, 5)
+  createdAt   DateTime    @default(now())
+  items       OrderItem[]
+}
+
+model OrderItem {
+  id              String   @id @default(uuid())
+  orderId         String
+  order           Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId       String
+  product         Product  @relation(fields: [productId], references: [id])
+  orderedUnit     String
+  orderedQuantity Decimal  @db.Decimal(30, 5)
+  baseQuantity    Decimal  @db.Decimal(30, 5)
+  unitPrice       Decimal  @db.Decimal(30, 5)
+  subtotal        Decimal  @db.Decimal(30, 5)
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action    String
+  details   String
+  createdAt DateTime @default(now())
+}

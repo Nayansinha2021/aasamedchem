@@ -1,8 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #faf7f2;
+  --foreground: #1e293b;
+  --accent: #b48a5e; /* soft warm bronze */
+  --accent-glow: rgba(180, 138, 94, 0.08);
+  --card-bg: #ffffff;
+  --border-color: #eae3d2;
 }
 
 @theme inline {
@@ -12,15 +16,50 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), sans-serif;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism panel styling - Cream theme version */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 20px -2px rgba(180, 160, 140, 0.08);
+}
+
+.glass-panel-hover:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: #d4c8b0;
+  box-shadow: 0 10px 25px -4px rgba(180, 160, 140, 0.15);
+  transform: translateY(-2px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Soft ambient background */
+.animated-bg {
+  background: linear-gradient(135deg, #faf7f2 0%, #f4eee1 50%, #f7f1e6 100%);
+}
+
+/* Custom Scrollbars - Warm theme */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #faf7f2;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e2d9c5;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b48a5e;
 }
