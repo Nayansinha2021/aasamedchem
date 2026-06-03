@@ -4,6 +4,8 @@ import * as bcrypt from 'bcrypt';
 import { z } from 'zod';
 import { Role } from '@prisma/client';
 
+import { checkRateLimit } from '@/lib/rateLimit';
+
 const registerSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   email: z.string().email('Invalid email address'),
@@ -15,6 +17,17 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(request: Request) {
   try {
+    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || '127.0.0.1';
+
+    // Rate limit: max 5 registrations per 15 minutes per IP
+    const rateLimit = await checkRateLimit(`register:ip:${ip}`, 5, 15 * 60 * 1000);
+    if (!rateLimit.success) {
+      return NextResponse.json(
+        { error: 'Too many registration requests. Please try again in 15 minutes.' },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
     const result = registerSchema.safeParse(body);
 

@@ -117,3 +117,13 @@ model AuditLog {
   details   String
   createdAt DateTime @default(now())
 }
+
+model RateLimit {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  points    Int      @default(1)
+  expireAt  DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
