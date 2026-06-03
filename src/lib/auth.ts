@@ -1,7 +1,7 @@
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { prisma } from './prisma';
-import * as bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { checkRateLimit } from './rateLimit';
 
 export const authOptions: NextAuthOptions = {
